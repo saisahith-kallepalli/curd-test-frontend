@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Resizable } from "re-resizable";
 import axios from "axios";
-const api = "http://localhost:8080/api/";
+const api = "https://curd-test-backend.onrender.com/api/";
 interface Data {
   _id?: string;
   name: string;
@@ -167,9 +167,12 @@ const App: React.FC = () => {
             <form
               id="data-form"
               className="space-y-4"
-              onSubmit={() =>
-                isNew ? postUser(newData) : updateUser(newData)
-              }>
+              onSubmit={(e) => {
+                e.preventDefault();
+                isNew ? postUser(newData) : updateUser(newData);
+                setNewData({ name: "", email: "", phone: "" });
+                setIsNew(true);
+              }}>
               <div>
                 <label
                   htmlFor="name"
@@ -273,10 +276,20 @@ const App: React.FC = () => {
             <h2 className="text-7xl font-bold text-indigo-600 mb-4">Data</h2>
 
             <div className="flex justify-between items-center mb-4 w-[100%]">
+              <div className="flex items-center">
+                <button
+                  className="hover:text-indigo-700 bg-indigo-100 hover:bg-indigo-200 px-4 py-2 rounded-md text-indigo-600"
+                  onClick={() => {
+                    setNewData({ name: "", email: "", phone: "" });
+                    setIsNew(true);
+                  }}>
+                  Add Data
+                </button>
+              </div>
               <div>
                 <p>
-                  Add Count: <span id="count">{calls.addCount}</span> ,Update
-                  Count:<span>{calls.updateCount}</span>
+                  Add Count: <span id="count">{calls?.addCount}</span> ,Update
+                  Count:<span>{calls?.updateCount}</span>
                 </p>
               </div>
             </div>
